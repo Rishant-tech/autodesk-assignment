@@ -6,10 +6,12 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "usage: go run ./assignment1 <text>")
-		os.Exit(1)
+	testStr := "String; 2be reversed..."
+	if got := ReverseWords(testStr); got != "gnirtS; eb2 desrever..." {
+		panic(fmt.Sprintf("reverse_words(%q) = %q", testStr, got))
 	}
 
-	fmt.Println(Reverse(os.Args[1]))
+	if len(os.Args) > 1 {
+		fmt.Println(ReverseWords(os.Args[1]))
+	}
 }
