@@ -1,8 +1,8 @@
 # autodesk-assignment
 
-Repository scaffold with two standalone Go assignments.
+Two standalone Go assignments.
 
-## Structure
+## Repository Layout
 
 ```text
 autodesk-assignment/
@@ -19,69 +19,66 @@ autodesk-assignment/
 └── .gitignore
 ```
 
+## Assignment 1
+
+Reverse each word in an input string.
+
+- The order of the words stays the same
+- A word is made of letters and/or numbers
+- Spaces and punctuation stay in place
+
+Example:
+
+```text
+String; 2be reversed...
+```
+
+becomes:
+
+```text
+gnirtS; eb2 desrever...
+```
+
+### Run
+
+```bash
+go test ./assignment1/...
+go run ./assignment1 "String; 2be reversed..."
+```
+
+## Assignment 2
+
+Update the build version number in two files:
+
+- `SConstruct`
+- `VERSION`
+
+The updater reads:
+
+- `SourcePath`
+- `BuildNum`
+
+It expects the files to be located under:
+
+```text
+$SourcePath/develop/global/src
+```
+
+It updates:
+
+- `point=123,` in `SConstruct`
+- `ADLMSDK_VERSION_POINT= 123` in `VERSION`
+
+### Run
+
+```bash
+export SourcePath=/path/to/source
+export BuildNum=456
+go test ./assignment2/...
+go run ./assignment2
+```
+
 ## Notes
 
-- Each assignment folder is self-contained.
-- `main.go` files provide a simple executable entry point for each assignment.
-- The repository uses only the Go standard library.
-    locked_until    TIMESTAMPTZ,                   -- NULL when not locked
-    last_login_at   TIMESTAMPTZ,
-    created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
--- Sessions table
-CREATE TABLE sessions (
-    id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id     UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    expires_at  TIMESTAMPTZ NOT NULL,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-```
-
-Migrations run automatically on startup via embedded SQL files — no manual setup required.
-
----
-
-## Security Design
-
-| Concern              | Implementation                                                     |
-|----------------------|--------------------------------------------------------------------|
-| Password storage     | bcrypt with default cost (min cost 10)                             |
-| Session tokens       | Random UUIDs generated server-side, stored in PostgreSQL           |
-| Session expiry       | Checked on every command, configurable timeout                     |
-| Account lockout      | Configurable threshold and lockout duration                        |
-| 2FA                  | TOTP (RFC 6238), compatible with Google Authenticator              |
-| 2FA verification     | Code verified before secret is saved; code required to disable     |
-
----
-
-## Tech Stack
-
-| Layer       | Technology                                                                 |
-|-------------|----------------------------------------------------------------------------|
-| Language    | Go 1.24                                                                    |
-| Database    | PostgreSQL 16                                                              |
-| DB Driver   | [pgx v5](https://github.com/jackc/pgx)                                    |
-| Migrations  | [golang-migrate](https://github.com/golang-migrate/migrate) (embedded SQL) |
-| CLI         | [chzyer/readline](https://github.com/chzyer/readline) (history + tab-completion) |
-| Terminal UI | [pterm](https://github.com/pterm/pterm)                                    |
-| 2FA / TOTP  | [pquerna/otp](https://github.com/pquerna/otp)                              |
-| QR Code     | [mdp/qrterminal](https://github.com/mdp/qrterminal)                        |
-| Passwords   | [golang.org/x/crypto/bcrypt](https://pkg.go.dev/golang.org/x/crypto/bcrypt) |
-| Containers  | Docker + Docker Compose                                                    |
-
----
-
-## Stopping the App
-
-To stop all containers:
-
-```bash
-docker compose down
-```
-
-To stop and also delete the database volume (all data):
-
-```bash
-docker compose down -v
-```
+- The code uses only the Go standard library.
+- Both assignments include tests.
